@@ -19,3 +19,5 @@ test('hit once', () => {
     boat.hit(5232)
     expect(boat.isSunk()).toBe(true);
   });
+
+  //These may now be broken due to adding name parameter!
