@@ -1,5 +1,5 @@
-const Ship = require('../src/index');
-const boat = Ship(3);
+const funcs = require('../src/index');
+const boat = funcs.Ship('tug', 3);
 
 test('simple case', () => {
   expect(boat.isSunk()).toBe(false);
@@ -19,5 +19,3 @@ test('hit once', () => {
     boat.hit(5232)
     expect(boat.isSunk()).toBe(true);
   });
-
-  //These may now be broken due to adding name parameter!
