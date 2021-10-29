@@ -15,7 +15,6 @@ const Gameboard = () => {
     const missedArray = [];
     const sunkArray = [];
     const placeShip = (name, length, startCoord, orientation) => {
-        shipArray.push(Ship(name, length));
         const createPositionArray = () => {
             const positionArray = [];
             let dimension;
@@ -30,6 +29,7 @@ const Gameboard = () => {
                 let newCoord = coord(orientation, i, startCoord);
                 positionArray.push(newCoord);
             }
+            shipArray.push(Ship(name, length));
             return positionArray;
         };
         const updateOccupiedArray = () => {
@@ -58,7 +58,7 @@ const Gameboard = () => {
         if(miss) {missedArray.push(coords)};
 
     };
-    return {placeShip, receiveAttack, missedArray, shipArray};
+    return {placeShip, receiveAttack, missedArray, shipArray, sunkArray};
 };
 
 

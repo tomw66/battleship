@@ -29,3 +29,17 @@ test('record hits', () => {
   expect(newBoard.shipArray[1].hitCoords).toMatchObject([[2,5]]);
   expect(newBoard.shipArray[0].hitCoords).toMatchObject([[3,1]]);
 });
+
+test('sink a ship', () => {
+  expect(newBoard.shipArray[0].isSunk()).toBe(false);
+  newBoard.receiveAttack([1,1]);
+  newBoard.receiveAttack([2,1]);
+  expect(newBoard.shipArray[0].isSunk()).toBe(true);
+});
+
+test('sink all ships', () => {
+  newBoard.receiveAttack([2,3]);
+  newBoard.receiveAttack([2,4]);
+  newBoard.receiveAttack([2,6]);
+  expect(newBoard.receiveAttack([2,7])).toBe('Game over');
+});
