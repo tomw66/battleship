@@ -18,6 +18,14 @@ test('reject ship if out of bounds', () => {
   expect(() => newBoard.placeShip('cruiser', 5, [7, 7, 'x'])).toThrow('Ship out of bounds')
 });
 
-test('fdgff', () => {
-  expect(newBoard.receiveAttack([2,5])).toMatchObject([2,5])
+test('record missed attacks', () => {
+  newBoard.receiveAttack([3,1]);
+  newBoard.receiveAttack([2,5]);
+  newBoard.receiveAttack([9,9]);
+  expect(newBoard.missedArray).toMatchObject([[9,9]])
+});
+
+test('record hits', () => {
+  expect(newBoard.shipArray[1].hitCoords).toMatchObject([[2,5]]);
+  expect(newBoard.shipArray[0].hitCoords).toMatchObject([[3,1]]);
 });

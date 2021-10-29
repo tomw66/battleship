@@ -6,14 +6,16 @@ const Ship = (name, length) => {
     const isSunk = () => {
         return (hitCoords.length === length)
     };
-    return {name, length, hit, isSunk};
+    return {name, length, hitCoords, hit, isSunk};
 };
 
 const Gameboard = () => {
+    const shipArray = [];
     const occupiedArray = [];
     const missedArray = [];
+    const sunkArray = [];
     const placeShip = (name, length, startCoord, orientation) => {
-        const ship = Ship(name, length);
+        shipArray.push(Ship(name, length));
         const createPositionArray = () => {
             const positionArray = [];
             let dimension;
@@ -38,15 +40,25 @@ const Gameboard = () => {
         return updateOccupiedArray();
     };
     const receiveAttack = (coords) => {
+        let miss = true;
         for(let i = 0; i < occupiedArray.length; i++) {
             let posString = JSON.stringify(occupiedArray[i].posArray);
             if(posString.includes(JSON.stringify(coords))){
-                return coords;
+                shipArray[i].hit(coords);
+                if(shipArray[i].isSunk()) {
+                    sunkArray.push(shipArray[i]);
+                    if(sunkArray.length === shipArray.length) {
+                        return('Game over') //Change these nested ifs to separate functions
+                    }
+                }
+                miss = false;
+                break;
             }
-            missedArray.push(coords);
         }
+        if(miss) {missedArray.push(coords)};
+
     };
-    return {placeShip, receiveAttack};
+    return {placeShip, receiveAttack, missedArray, shipArray};
 };
 
 
