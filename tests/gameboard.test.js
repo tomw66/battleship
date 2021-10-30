@@ -41,5 +41,6 @@ test('sink all ships', () => {
   newBoard.receiveAttack([2,3]);
   newBoard.receiveAttack([2,4]);
   newBoard.receiveAttack([2,6]);
-  expect(newBoard.receiveAttack([2,7])).toBe('Game over');
+  newBoard.receiveAttack([2,7]);
+  expect(newBoard.checkGameOver()).toBe(true);
 });

@@ -39,18 +39,24 @@ const Gameboard = () => {
         };
         return updateOccupiedArray();
     };
+    const checkGameOver = () => {
+        if(sunkArray.length === shipArray.length) {
+            return true
+        }
+    };
+    const hitShip = (i, coords) => {
+        shipArray[i].hit(coords);
+        if(shipArray[i].isSunk()) {
+            sunkArray.push(shipArray[i]);
+            checkGameOver();
+        }
+    };
     const receiveAttack = (coords) => {
         let miss = true;
         for(let i = 0; i < occupiedArray.length; i++) {
             let posString = JSON.stringify(occupiedArray[i].posArray);
             if(posString.includes(JSON.stringify(coords))){
-                shipArray[i].hit(coords);
-                if(shipArray[i].isSunk()) {
-                    sunkArray.push(shipArray[i]);
-                    if(sunkArray.length === shipArray.length) {
-                        return('Game over') //Change these nested ifs to separate functions
-                    }
-                }
+                hitShip(i, coords);
                 miss = false;
                 break;
             }
@@ -58,7 +64,7 @@ const Gameboard = () => {
         if(miss) {missedArray.push(coords)};
 
     };
-    return {placeShip, receiveAttack, missedArray, shipArray, sunkArray};
+    return {placeShip, receiveAttack, checkGameOver, missedArray, shipArray, sunkArray,};
 };
 
 
