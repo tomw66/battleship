@@ -15,7 +15,11 @@ test('place another ship', () => {
 });
 
 test('reject ship if out of bounds', () => {
-  expect(() => newBoard.placeShip('cruiser', 5, [7, 7, 'x'])).toThrow('Ship out of bounds')
+  expect(() => newBoard.placeShip('cruiser', 5, [7, 7], 'x')).toThrow('Ship out of bounds')
+});
+
+test('reject ship placed on occupied space', () => {
+  expect(() => newBoard.placeShip('gig', 4, [1, 4], 'x')).toThrow('Already occupied')
 });
 
 test('record missed attacks', () => {
