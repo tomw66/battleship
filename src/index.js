@@ -39,23 +39,48 @@ const Gameboard = () => {
         };
         return updateOccupiedArray();
     };
-    const placeAllShips = (startArray, orArray) => {
-        const shipClasses = ['Carrier', 'Battleship', 'Cruiser', 'Submarine', 'Destroyer'];
-        const sizes = [5, 4, 3, 3, 2];
-        for(let i = 0; i < sizes.length; i++) {
-            placeShip(shipClasses[i], sizes[i], startArray[i], orArray[i]);
+    const randomPlace = () => {
+        let starts = [];
+        let ors = [];
+        const randomCoord = () => {
+            const x = Math.floor(Math.random()*10);
+            const y = Math.floor(Math.random()*10);
+            return [x, y];
         }
-    };
-    const randomCoord = () => {
-        const x = Math.floor(Math.random()*10);
-        const y = Math.floor(Math.random()*10);
-        return [x, y];
-    }
-    const randomPlaceAllShips = () => {//need to catch the two errors somewhere here
         const randomOr = () => {
             let choices = ['x', 'y']
             return choices[Math.floor(Math.random() * 2)]
         }
+        for(let i = 0; i < 5; i++) {
+            starts[i] = randomCoord();
+            ors[i] = randomOr();
+        }
+        return {starts, ors}
+    };
+    const placeAllShips = (manual, inputStartArray, inputOrArray) => {
+        const shipClasses = ['Carrier', 'Battleship', 'Cruiser', 'Submarine', 'Destroyer'];
+        const sizes = [5, 4, 3, 3, 2];
+        let startArray;
+        let orArray;
+        let currentOccupiedArray = []; //This may be adjusted when UI is implemented
+        if(manual) {
+            startArray = inputStartArray;
+            orArray = inputOrArray;
+        }
+        else if (!manual) {
+            startArray = randomPlace.randomCoord();
+            orArray = randomPlace.randomOr();
+        }
+        for(let i = 0; i < sizes.length; i++) {
+            try {
+                currentOccupiedArray[i] = placeShip(shipClasses[i], sizes[i], startArray[i], orArray[i]);
+            }
+            catch(error) {
+                console.log(error);
+                i--
+            }
+        }
+        return currentOccupiedArray[4];
     };
     const checkGameOver = () => {
         if(sunkArray.length === shipArray.length) {
@@ -91,7 +116,6 @@ const Gameboard = () => {
         placeAllShips,
         receiveAttack, 
         checkGameOver, 
-        randomCoord,
         missedArray, 
         shipArray, 
         sunkArray
@@ -114,9 +138,10 @@ const gameloop = () => {
     let person = Player('Tom', Gameboard());
     let bot = Player('Computer', Gameboard());
     let personStartChoices = [[2,2],[9,3],[0,6],[4,8],[5,4]];
-    let personOrChoices = ['x','y','y','x','y']
-
+    let personOrChoices = ['x','y','y','x','y'];
+    console.log(person.placeAllShips(true, personStartChoices, personOrChoices));
+    console.log(bot.placeAllShips(false));
 };
-
+gameloop();
 module.exports.Ship = Ship;
 module.exports.Gameboard = Gameboard;
