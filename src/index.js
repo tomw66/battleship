@@ -1,3 +1,5 @@
+import './style.css';
+
 const Ship = (name, length) => {
     let hitCoords = [];
     const hit = (pos) => {
@@ -144,6 +146,19 @@ const gameloop = () => {
     console.log(person.board.placeAllShips(true, personStartChoices, personOrChoices));
     console.log(bot.board.placeAllShips(false));
 };
-gameloop();
-module.exports.Ship = Ship;
-module.exports.Gameboard = Gameboard;
+
+const gridGeneration = (name) => {
+    const n = 10;
+    let board = document.getElementById(name);
+    const elementSize = "auto ";
+    board.style.gridTemplateRows = elementSize.repeat(n);
+    board.style.gridTemplateColumns = elementSize.repeat(n); 
+    for (let i = 0; i < n**2; i++) {
+        const grid = document.createElement('div');
+        grid.classList.add('grid');
+        grid.id = name + i;
+        board.appendChild(grid);  
+    }
+};
+gridGeneration('player');
+gridGeneration('computer');
