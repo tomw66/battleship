@@ -68,8 +68,8 @@ const Gameboard = () => {
             orArray = inputOrArray;
         }
         else if (!manual) {
-            startArray = randomPlace.randomCoord();
-            orArray = randomPlace.randomOr();
+            startArray = randomPlace().starts;
+            orArray = randomPlace().ors;
         }
         for(let i = 0; i < sizes.length; i++) {
             try {
@@ -77,6 +77,8 @@ const Gameboard = () => {
             }
             catch(error) {
                 console.log(error);
+                startArray = randomPlace().starts; //This temporary; also need to request another input from user
+                orArray = randomPlace().ors;
                 i--
             }
         }
@@ -139,8 +141,8 @@ const gameloop = () => {
     let bot = Player('Computer', Gameboard());
     let personStartChoices = [[2,2],[9,3],[0,6],[4,8],[5,4]];
     let personOrChoices = ['x','y','y','x','y'];
-    console.log(person.placeAllShips(true, personStartChoices, personOrChoices));
-    console.log(bot.placeAllShips(false));
+    console.log(person.board.placeAllShips(true, personStartChoices, personOrChoices));
+    console.log(bot.board.placeAllShips(false));
 };
 gameloop();
 module.exports.Ship = Ship;

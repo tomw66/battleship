@@ -19,13 +19,4 @@ module.exports = {
         type: 'asset/resource',
       },
     ],
-  resolve: {
-    extensions: ['', 'js', 'jsx'],
-    modules: [
-      'node_modules',
-      'bower_components',
-      'shared',
-      '/shared/vendor/modules',
-    ],
-},
 }}
